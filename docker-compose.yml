@@ -1,0 +1,39 @@
+
+version: '2.2'
+services:
+  elastic1:
+    container_name: es770
+    networks:
+      - elastic
+    image: elastic_7.7.0
+    ports:
+      - 9201:9200
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      #- cluster.name=es-docker-cluster
+      #- discovery.seed_hosts=es01,es02
+      #- cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      #- "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
+  kibana1:
+    container_name: kib770
+    image: kibana_milestones
+    networks:
+      - elastic
+    ports:
+      - 5601:5601
+    depends_on:
+      - elastic1
+    environment:
+      ELASTICSEARCH_HOSTS: http://es770:9200
+
+networks:
+  elastic:
+    driver: bridge
+volumes:
+  data01:
+    driver: local

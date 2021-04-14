@@ -1,0 +1,10 @@
+FROM docker.elastic.co/kibana/kibana:7.7.0
+
+RUN ls .
+
+RUN pwd
+
+COPY kibana_milestones_vis-7.7.0.zip /usr/share/kibana/plugins/
+
+RUN bin/kibana-plugin install https://github.com/walterra/kibana-milestones-vis/releases/download/v7.7.0/kibana_milestones_vis-7.7.0.zip
+
